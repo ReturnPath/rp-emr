@@ -44,7 +44,7 @@ describe DP::EMR::InstanceGroup do
       end
 
       it "sets bid_price" do
-        expect(group.to_hash[:bid_price]).to eq(1.0)
+        expect(group.to_hash[:bid_price]).to eq('1.0')
       end
     end
   end

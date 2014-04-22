@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rspec'
 require 'pry'
 
-require 'dp-emr'
+require 'dp/emr'
 
 RSpec.configure do |config|
   config.order = "random"

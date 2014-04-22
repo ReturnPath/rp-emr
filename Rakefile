@@ -4,7 +4,7 @@ require 'gemfury/command'
 require 'rspec/core/rake_task'
 require 'rubygems/package'
 
-require 'dp-emr'
+require 'dp/emr'
 
 RSpec::Core::RakeTask.new(:spec)
 task :default => :spec

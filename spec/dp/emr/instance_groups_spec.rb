@@ -81,7 +81,7 @@ describe DP::EMR::InstanceGroups do
       end
 
       it "sets bid price" do
-        expect(groups.to_a.map { |h| h[:bid_price] }).to eq([1, 2, 3])
+        expect(groups.to_a.map { |h| h[:bid_price] }).to eq(['1', '2', '3'])
       end
 
       it "sets market" do

@@ -1,5 +1,3 @@
-require_relative '../dp-emr'
-
 module DP
   module EMR
     class CLI < Thor
