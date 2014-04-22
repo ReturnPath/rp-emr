@@ -16,13 +16,9 @@ module DP
         supported_products: nil,
         new_supported_products: nil,
         visible_to_all_users: true,
-        job_flow_role: 'DataPipelineDefaultRole',
+        job_flow_role: nil,
         tags: nil,
       )
-
-      def create!
-        emr.job_flows.create(to_hash)
-      end
 
       def to_hash
         {

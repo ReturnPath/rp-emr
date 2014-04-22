@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'dp-emr'
+require File.expand_path('../../lib/dp-emr', __FILE__)
 
 DP::EMR::CLI.start

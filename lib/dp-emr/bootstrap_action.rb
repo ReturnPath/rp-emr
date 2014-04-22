@@ -4,7 +4,7 @@ module DP
     #
     # @example
     #   def bootstrap_hadoop
-    #     EMR::BootstrapAction.new(
+    #     DP::EMR::BootstrapAction.new(
     #       name: 'Configure Hadoop',
     #       path: 's3://elasticmapreduce/bootstrap-actions/configure-hadoop',
     #       args: ['-c', 'fs.s3n.multipart.uploads.enabled=false']
@@ -12,7 +12,7 @@ module DP
     #   end
     #
     #   def bootstrap_daemons
-    #     EMR::BootstrapAction.new(
+    #     DP::EMR::BootstrapAction.new(
     #       name: 'Configure Daemons',
     #       path: 's3://elasticmapreduce/bootstrap-actions/configure-daemons',
     #       args: ['--namenode-heap-size=15000'],

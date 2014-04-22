@@ -2,16 +2,9 @@ require 'rubygems'
 require 'rspec'
 require 'pry'
 
-require File.expand_path('../../lib/dp-emr', __FILE__)
+require 'dp-emr'
 
 RSpec.configure do |config|
-  # == Mock Framework
-  #
-  # RSpec uses it's own mocking framework by default. If you prefer to
-  # use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_framework = :mocha
-  # config.mock_framework = :flexmock
-  # config.mock_framework = :rr
+  config.order = "random"
 end
 

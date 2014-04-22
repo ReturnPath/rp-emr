@@ -20,10 +20,16 @@ module DP
           name: name,
           market: market,
           instance_role: instance_role,
-          bid_price: bid_price,
+          bid_price: bid_price.to_s,
           instance_type: instance_type,
           instance_count: instance_count,
         }.reject { |k,v| !v || (v.respond_to?(:empty?) && v.empty?) }
+      end
+
+      private
+
+      def market
+        bid_price ? 'SPOT' : @market
       end
     end
   end

@@ -13,7 +13,7 @@ module DP
         private
 
         def step
-          EMR::Step.new(
+          DP::EMR::Step.new(
             name: "Setup Hadoop Debugging",
             action_on_failure: action_on_failure,
             hadoop_jar_step: {

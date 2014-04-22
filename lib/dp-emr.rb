@@ -1,10 +1,18 @@
+require 'active_support'
+require 'active_support/core_ext/numeric'
 require 'assembler'
+require 'aws-sdk'
+require 'ostruct'
+require 'pp'
+require 'thor'
+
 
 module DP
   module EMR
   end
 end
 
+require_relative 'dp-emr/cli'
 require_relative 'dp-emr/instance_group'
 require_relative 'dp-emr/instances'
 require_relative 'dp-emr/step'
