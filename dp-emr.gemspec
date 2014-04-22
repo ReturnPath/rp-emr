@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "aws-sdk"
   spec.add_dependency "assembler"
+  spec.add_dependency "thor"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
