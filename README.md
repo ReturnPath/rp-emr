@@ -1,4 +1,4 @@
-# Data Pipeline EMR Client
+# ReturnPath EMR Tools
 
 This is a Ruby library for creating & launching jobs on AWS's Elastic MapReduce
 service. The library provides two basic tools: a set of classes to encapsulate
@@ -147,7 +147,7 @@ class ExampleCLI < Thor
     default_instance_type: 'm1.large',
     core_instance_count: 2,
     task_instance_count: 6,
-    job_flow_role: 'DataPipelineDefaultRole',
+    job_flow_role: 'MyIAMRole',
   )
 
   # Here we're importing the options used to control how Pig is setup
@@ -155,15 +155,15 @@ class ExampleCLI < Thor
     
   # And here were importing options used to create a Pig step generally
   add_pig_script_step_method_options(
-    script_bucket: 'oib-mapreduce-rmichael',
+    script_bucket: 'my-emr-scripts-bucket',
   )
 
   # Let's define some options specific to the task we're trying to complete
-  method_option :output, default: 'analysis/real_people'
+  method_option :output, default: 'counted_words'
   def pig
-    script_path   = File.expand_path('../count_real.pig', __FILE__)
-    input_path    = "s3://oib-mapreduce/input/insights/read_rate/2013-12-12"
-    output_path   = "s3://oib-mapreduce-rmichael/#{options[:output]}/#{Date.today}"
+    script_path   = File.expand_path('../count_words.pig', __FILE__)
+    input_path    = "s3://my-input-bucket/words"
+    output_path   = "s3://my-output-bucket/#{options[:output]}/#{Time.now.to_i}"
 
     # These will be available in our Pig script as '$INPUT' and '$OUTPUT'
     pig_step_args = { pig_params: options[:pig_params].merge(
@@ -175,7 +175,7 @@ class ExampleCLI < Thor
     # to create a job flow.  The task returns the job identifier, and we're passing
     # the options hash that Thor parsed for us (this is why we did all that setup
     # earlier)
-    job_id = invoke 'emr:create_job', ['Real People Analysis'], options
+    job_id = invoke 'emr:create_job', ['Word Count Job'], options
 
     # The job has been created, so we'll add a step to setup pig
     invoke 'emr:add_setup_pig_step', [job_id], options
@@ -193,19 +193,19 @@ ExampleCLI.start
 Now, we can get a nice help page describing all the options available to us
 
 ```bash
-bundle exec ./example --help
+bundle exec ./word_count_cli --help
 > Commands:
->   example help [COMMAND]  # Describe available commands or one specific command
->   example pig             # Test a pig script
+>   word_count_cli help [COMMAND]  # Describe available commands or one specific command
+>   work_count_cli pig             # Test a pig script
 > 
 > Options:
 >   -a, [--keep-alive], [--no-keep-alive]  # Set to true if you want the cluster to stay alive after completion/failure
 >   -v, [--verbose], [--no-verbose]        # Print lots of stuff
 >       [--dry-run], [--no-dry-run]        # Don't actually talk to AWS
 
-bundle exec ./example help pig
+bundle exec ./word_count_cli help pig
 > Usage:
->   example pig
+>   word_count_cli pig
 > 
 > Options:
 >   -k, [--ec2-key-name=KEY_NAME]                # An AWS keypair for the cluster.  Useful if you want to shell into the cluster
@@ -221,21 +221,20 @@ bundle exec ./example help pig
 >                                                # Default: 6
 >       [--task-bid-price=N.NN]                  # If set, will use spot instances for task trackers with this bid price
 >       [--job-flow-role=IAM_ROLE]               # IAM Role for the job flow
->                                                # Default: DataPipelineDefaultRole
+>                                                # Default: MyIAMRole
 >       [--script-bucket=BUCKET]                 # The S3 bucket to use for storing the Pig script
->                                                # Default: oib-mapreduce-rmichael
+>                                                # Default: my-emr-scripts-bucket
 >   -p, [--pig-params=PARAM:VALUE]               # Parameters to be passed to the pig script
 >       [--output=OUTPUT]
->                                                # Default: analysis/real_people
 >   -a, [--keep-alive], [--no-keep-alive]        # Set to true if you want the cluster to stay alive after completion/failure
 >   -v, [--verbose], [--no-verbose]              # Print lots of stuff
 >       [--dry-run], [--no-dry-run]              # Don't actually talk to AWS
 
-bundle exec ./example pig --ouput foo --dry-run
+bundle exec ./word_count_cli pig --ouput foo --dry-run
 > -----------
-> Created job flow job_flow_id with ["Real People Analysis"], {"keep_alive"=>false, "verbose"=>false, "dry_run"=>true, ...}
+> Created job flow job_flow_id with ["Word Count Job"], {"keep_alive"=>false, "verbose"=>false, "dry_run"=>true, ...}
 > -----------
 > Added setup pig step to job_flow_id with ["job_flow_id"], {"keep_alive"=>false, "verbose"=>false, "dry_run"=>true, ...}
 > -----------
-> Added pig script step to job_flow_id with ["job_flow_id", "/Users/rmichael/work/emr-test/count_real.pig"], {"keep_alive"=>false, ...}
+> Added pig script step to job_flow_id with ["job_flow_id", "count_words.pig"], {"keep_alive"=>false, ...}
 ```
