@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe DP::EMR::Job do
+describe RP::EMR::Job do
   describe "#to_hash" do
     let(:instances_args) { {} }
 
     let(:instances) do
-      DP::EMR::Instances.new(instances_args)
+      RP::EMR::Instances.new(instances_args)
     end
 
     let(:job_args) { {} }
 
     let(:job) do
-      DP::EMR::Job.new(job_args) do |j|
+      RP::EMR::Job.new(job_args) do |j|
         j.instances = instances.to_hash
       end
     end

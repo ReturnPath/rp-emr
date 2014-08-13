@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe DP::EMR::BootstrapAction do
+describe RP::EMR::BootstrapAction do
   describe "#to_hash" do
     let(:action) do
-      DP::EMR::BootstrapAction.new do |a|
+      RP::EMR::BootstrapAction.new do |a|
         a.name = 'name'
         a.path = 'path'
         a.args = ['args']

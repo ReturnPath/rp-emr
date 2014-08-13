@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DP::EMR::Step::S3DistCp do
+describe RP::EMR::Step::S3DistCp do
   describe "#to_hash" do
     let(:step_args) { {} }
 
     let(:step) do
-      DP::EMR::Step::S3DistCp.new(step_args)
+      RP::EMR::Step::S3DistCp.new(step_args)
     end
 
     it "returns hash" do

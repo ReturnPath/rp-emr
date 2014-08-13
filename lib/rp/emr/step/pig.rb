@@ -1,6 +1,6 @@
 require 'digest/md5'
 
-module DP
+module RP
   module EMR
     class Step
       class Pig

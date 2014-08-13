@@ -1,4 +1,4 @@
-module DP
+module RP
   module EMR
     class Step
       class SetupPig
@@ -16,7 +16,7 @@ module DP
         private
 
         def step
-          DP::EMR::Step.new(
+          RP::EMR::Step.new(
             name: "Setup Pig",
             action_on_failure: action_on_failure,
             hadoop_jar_step: {

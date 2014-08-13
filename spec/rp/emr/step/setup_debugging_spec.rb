@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DP::EMR::Step::SetupDebugging do
+describe RP::EMR::Step::SetupDebugging do
   describe "#to_hash" do
     let(:step_args) { {} }
 
     let(:step) do
-      DP::EMR::Step::SetupDebugging.new(step_args)
+      RP::EMR::Step::SetupDebugging.new(step_args)
     end
 
     it "returns hash" do

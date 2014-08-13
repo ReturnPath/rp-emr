@@ -1,4 +1,4 @@
-module DP
+module RP
   module EMR
     class InstanceGroup
       extend Assembler

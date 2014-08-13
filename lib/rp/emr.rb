@@ -7,7 +7,7 @@ require 'pp'
 require 'thor'
 
 
-module DP
+module RP
   module EMR
   end
 end

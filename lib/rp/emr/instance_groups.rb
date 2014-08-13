@@ -1,4 +1,4 @@
-module DP
+module RP
   module EMR
     class InstanceGroups
       extend Assembler
@@ -33,7 +33,7 @@ module DP
       private
 
       def master_instance_group
-        DP::EMR::InstanceGroup.new do |ig|
+        RP::EMR::InstanceGroup.new do |ig|
           ig.instance_role = 'MASTER'
           ig.instance_type = master_instance_type || default_instance_type
           ig.instance_count = master_instance_count
@@ -43,7 +43,7 @@ module DP
       end
 
       def core_instance_group
-        DP::EMR::InstanceGroup.new do |ig|
+        RP::EMR::InstanceGroup.new do |ig|
           ig.instance_role = 'CORE'
           ig.instance_type = core_instance_type || default_instance_type
           ig.instance_count = core_instance_count
@@ -53,7 +53,7 @@ module DP
       end
 
       def task_instance_group
-        DP::EMR::InstanceGroup.new do |ig|
+        RP::EMR::InstanceGroup.new do |ig|
           ig.instance_role = 'TASK'
           ig.instance_type = task_instance_type || default_instance_type
           ig.instance_count = task_instance_count

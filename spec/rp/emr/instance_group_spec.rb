@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DP::EMR::InstanceGroup do
+describe RP::EMR::InstanceGroup do
   describe "#to_hash" do
     let(:group_args) { {} }
 
     let(:group) do
-      DP::EMR::InstanceGroup.new(group_args) do |ig|
+      RP::EMR::InstanceGroup.new(group_args) do |ig|
         ig.instance_role = 'instance_role'
         ig.instance_type = 'instance_type'
         ig.instance_count = 'instance_count'

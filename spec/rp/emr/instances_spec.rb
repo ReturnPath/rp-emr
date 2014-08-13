@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DP::EMR::Instances do
+describe RP::EMR::Instances do
   describe "#to_hash" do
     let(:instances_args) { {} }
 
     let(:instances) do
-      DP::EMR::Instances.new(instances_args)
+      RP::EMR::Instances.new(instances_args)
     end
 
     it "returns a hash" do

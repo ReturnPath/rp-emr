@@ -1,4 +1,4 @@
-module DP
+module RP
   module EMR
     class Step
       # Create a S3DistCp step
@@ -57,7 +57,7 @@ module DP
         private
 
         def step
-          DP::EMR::Step.new(
+          RP::EMR::Step.new(
             name: name,
             action_on_failure: action_on_failure,
             hadoop_jar_step: {

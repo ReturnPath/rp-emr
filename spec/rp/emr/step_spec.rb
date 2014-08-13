@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DP::EMR::Step do
+describe RP::EMR::Step do
   describe "#to_hash" do
     let(:step_args) { {} }
 
     let(:step) do
-      DP::EMR::Step.new(step_args) do |s|
+      RP::EMR::Step.new(step_args) do |s|
         s.name = 'name'
       end
     end

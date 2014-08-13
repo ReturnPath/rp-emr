@@ -1,4 +1,4 @@
-module DP
+module RP
   module EMR
     class CLI < Thor
       module TaskOptions
@@ -110,12 +110,12 @@ module DP
       desc "create_job JOB_NAME", "Create an EMR job"
       create_job_method_options
       def create_job(job_name, *)
-        instances = DP::EMR::Instances.new do |i|
+        instances = RP::EMR::Instances.new do |i|
           i.hadoop_version = '2.2.0'
           i.ec2_key_name = options[:ec2_key_name] if options[:ec2_key_name]
           i.keep_job_flow_alive_when_no_steps = options[:keep_alive]
 
-          i.instance_groups = DP::EMR::InstanceGroups.new do |ig|
+          i.instance_groups = RP::EMR::InstanceGroups.new do |ig|
             ig.default_instance_type = options[:default_instance_type] if options[:default_instance_type]
 
             ig.master_instance_type = options[:master_instance_type] if options[:master_instance_type]
@@ -130,11 +130,11 @@ module DP
           end.to_a
         end
 
-        setup_debugging_step = DP::EMR::Step::SetupDebugging.new do |s|
+        setup_debugging_step = RP::EMR::Step::SetupDebugging.new do |s|
           s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
         end
 
-        job = DP::EMR::Job.new do |job|
+        job = RP::EMR::Job.new do |job|
           job.log_uri = "s3://oib-mapreduce/logs/mosaic_analysis/#{job_name.underscore}"
           job.instances = instances.to_hash
           job.steps = [setup_debugging_step.to_hash]
@@ -158,7 +158,7 @@ module DP
       def add_setup_pig_step(job_id, *)
         job = AWS::EMR.new.job_flows[job_id]
 
-        step = DP::EMR::Step::SetupPig.new do |s|
+        step = RP::EMR::Step::SetupPig.new do |s|
           s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
         end
 
@@ -173,7 +173,7 @@ module DP
       def add_rollup_step(job_id, input, output, *)
         job = AWS::EMR.new.job_flows[job_id]
         
-        step = DP::EMR::Step::S3DistCp.new(
+        step = RP::EMR::Step::S3DistCp.new(
           name: 'Rollup',
           src: input,
           dest: output,
@@ -195,7 +195,7 @@ module DP
       def add_pig_script_step(job_id, script_path, *)
         job = AWS::EMR.new.job_flows[job_id]
         
-        step = DP::EMR::Step::Pig.new(
+        step = RP::EMR::Step::Pig.new(
           name: 'Pig',
           script_path: script_path,
           script_bucket: options[:script_bucket],

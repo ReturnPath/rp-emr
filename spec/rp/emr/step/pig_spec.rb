@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DP::EMR::Step::Pig do
+describe RP::EMR::Step::Pig do
   describe "#to_hash" do
     let(:written) { [] }
 
@@ -31,7 +31,7 @@ describe DP::EMR::Step::Pig do
     let(:step_args) { {} }
 
     let(:step) do
-      DP::EMR::Step::Pig.new(step_args) do |s|
+      RP::EMR::Step::Pig.new(step_args) do |s|
         s.name = 'step_name'
         s.script_path = script.path
         s.script_bucket = 'script_bucket'

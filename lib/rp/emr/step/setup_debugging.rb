@@ -1,4 +1,4 @@
-module DP
+module RP
   module EMR
     class Step
       class SetupDebugging
@@ -13,7 +13,7 @@ module DP
         private
 
         def step
-          DP::EMR::Step.new(
+          RP::EMR::Step.new(
             name: "Setup Hadoop Debugging",
             action_on_failure: action_on_failure,
             hadoop_jar_step: {

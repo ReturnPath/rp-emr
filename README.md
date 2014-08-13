@@ -8,7 +8,7 @@ simplify building job launchers.
 ## Client Wrapper
 
 The AWS EMR client is very low level, and basically expects a hash of values.
-dp-emr provides wrappers for the basic data types and some helpers for building
+rp-emr provides wrappers for the basic data types and some helpers for building
 collections.  All objects are built using the
 [assembler](https://github.com/benhamill/assembler) gem, so you can mix values
 between method-call syntax and builder-block syntax.
@@ -17,14 +17,14 @@ The basic bits look like this:
 
 ```ruby
 # Executes a script before the cluster starts processing steps
-bootstrap_action = DP::EMR::BootstrapAction.new(name: 'action name') do |a|
+bootstrap_action = RP::EMR::BootstrapAction.new(name: 'action name') do |a|
   a.path = 's3://path_to_script_to_run'
   a.args = ['--option value', '--other-option value']
 end
 
 # Runs a hadoop jar.  This is the bare-bones version, you'll probably want to 
-# use one of the classes in lib/dp/emr/step
-step = DP::EMR::Step.new(name: 'step name') do |s|
+# use one of the classes in lib/rp/emr/step
+step = RP::EMR::Step.new(name: 'step name') do |s|
   s.action_on_failure = 'CANCEL_AND_WAIT'
   s.hadoop_jar_step = {
     jar: 's3://path_to_jar',
@@ -33,7 +33,7 @@ step = DP::EMR::Step.new(name: 'step name') do |s|
 end
 
 # Runs a pig script
-pig_step = DP::EMR::Step::Pig.new(name: 'pig step') do |s|
+pig_step = RP::EMR::Step::Pig.new(name: 'pig step') do |s|
   s.script_path = '/local/path/to/pig_script.pig'
   s.script_bucket = 'bucket_to_upload_script_to'
   s.args = ['--args_to_append_to_job']
@@ -45,9 +45,9 @@ end
 
 # There are also steps for setting up pig, setting up debugging, using S3DistCP, etc
 
-# Creates an instance group.  As with DP::EMR::Step, you probably shouldn't be
-# using this directly, just DP::EMR::InstanceGroups instead
-instance_group = DP::EMR::InstanceGroup.new(name: 'custom instance group') do |ig|
+# Creates an instance group.  As with RP::EMR::Step, you probably shouldn't be
+# using this directly, just RP::EMR::InstanceGroups instead
+instance_group = RP::EMR::InstanceGroup.new(name: 'custom instance group') do |ig|
   ig.instance_role = 'MASTER'
   ig.instance_type = 'c1.medium'
   ig.instance_count = 100
@@ -56,8 +56,8 @@ instance_group = DP::EMR::InstanceGroup.new(name: 'custom instance group') do |i
 end
 
 # Defines the different instances groups to be used.  All the options for 
-# DP::EMR::InstanceGroup are supported, along with a defulat instance type
-instance_groups = DP::EMR::InstanceGroups.new do |ig|
+# RP::EMR::InstanceGroup are supported, along with a defulat instance type
+instance_groups = RP::EMR::InstanceGroups.new do |ig|
   ig.default_instance_type = 'c1.medium'
 
   ig.master_instance_type = 'c3.xlarge'
@@ -70,14 +70,14 @@ instance_groups = DP::EMR::InstanceGroups.new do |ig|
 end
 
 # Top-level instance definition
-instances = DP::EMR::Instances.new do |i|
+instances = RP::EMR::Instances.new do |i|
   i.instance_groups = instance_groups
   i.ec2_key_name = 'my_key_name'
   i.hadoop_version = '2.0'
 end
 
 # Now we can construct the actual job
-job = DP::EMR::Job.new do |j|
+job = RP::EMR::Job.new do |j|
   j.instances = instances
   j.steps = [step, pig_step]
   j.ami_version = :latest
@@ -126,12 +126,12 @@ For example:
 ```ruby
 #!/usr/bin/env ruby
 
-require 'dp/emr'
+require 'rp/emr'
 require 'thor'
 
 class ExampleCLI < Thor
   # This brings all the class-level helpers in
-  extend DP::EMR::CLI::TaskOptions
+  extend RP::EMR::CLI::TaskOptions
 
   # Creates shared options like --dry-run and --verbose
   cli_class_options
@@ -171,7 +171,7 @@ class ExampleCLI < Thor
       'OUTPUT'  => output_path,
     )}
 
-    # Now that we've constructed our options, we'll use the Thor task in lib/dp/emr/cli 
+    # Now that we've constructed our options, we'll use the Thor task in lib/rp/emr/cli 
     # to create a job flow.  The task returns the job identifier, and we're passing
     # the options hash that Thor parsed for us (this is why we did all that setup
     # earlier)

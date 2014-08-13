@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe DP::EMR::InstanceGroups do
+describe RP::EMR::InstanceGroups do
   describe "#to_a" do
     let(:group_args) { {} }
 
     let(:groups) do
-      DP::EMR::InstanceGroups.new(group_args)
+      RP::EMR::InstanceGroups.new(group_args)
     end
 
     it "returns hash" do

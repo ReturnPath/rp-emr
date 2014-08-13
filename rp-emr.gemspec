@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'dp/emr/version'
+require 'rp/emr/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "dp-emr"
-  spec.version       = DP::EMR::VERSION
+  spec.name          = "rp-emr"
+  spec.version       = RP::EMR::VERSION
   spec.authors       = ["Ryan Michael"]
   spec.email         = ["ryanmichael@otherinbox.com"]
   spec.summary       = %q{EMR Helpers}
@@ -28,5 +28,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "pry"
   spec.add_development_dependency "fuubar"
-  spec.add_development_dependency "gemfury"
 end

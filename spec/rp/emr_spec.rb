@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe DP::EMR do
+describe RP::EMR do
 end
 

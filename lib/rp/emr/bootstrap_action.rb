@@ -1,10 +1,10 @@
-module DP
+module RP
   module EMR
     # Bootstrap action wrapper
     #
     # @example
     #   def bootstrap_hadoop
-    #     DP::EMR::BootstrapAction.new(
+    #     RP::EMR::BootstrapAction.new(
     #       name: 'Configure Hadoop',
     #       path: 's3://elasticmapreduce/bootstrap-actions/configure-hadoop',
     #       args: ['-c', 'fs.s3n.multipart.uploads.enabled=false']
@@ -12,7 +12,7 @@ module DP
     #   end
     #
     #   def bootstrap_daemons
-    #     DP::EMR::BootstrapAction.new(
+    #     RP::EMR::BootstrapAction.new(
     #       name: 'Configure Daemons',
     #       path: 's3://elasticmapreduce/bootstrap-actions/configure-daemons',
     #       args: ['--namenode-heap-size=15000'],
