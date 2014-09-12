@@ -6,8 +6,8 @@ require 'rp/emr/version'
 Gem::Specification.new do |spec|
   spec.name          = "rp-emr"
   spec.version       = RP::EMR::VERSION
-  spec.authors       = ["Ryan Michael"]
-  spec.email         = ["ryanmichael@otherinbox.com"]
+  spec.authors       = ["Ryan Michael", "Andrew Harrison"]
+  spec.email         = ["ryanmichael@otherinbox.com", 'andrew.harrison@returnpath.com']
   spec.summary       = %q{EMR Helpers}
   spec.description   = %q{Framework for launching EMR job flows}
   spec.homepage      = ""
