@@ -24,6 +24,8 @@ module RP
       class S3DistCp
         extend Assembler
 
+        DEFAULT_S3_DISTCP_JAR = '/home/hadoop/lib/emr-s3distcp-1.0.jar'
+
         HASH_FIELDS = [
           :src,
           :dest,
@@ -46,7 +48,9 @@ module RP
           :copyFromManifest,
         ]
 
-        assemble_from(name: 'S3DistCp', action_on_failure: nil)
+        assemble_from(name: 'S3DistCp',
+                      action_on_failure: nil,
+                      s3_distcp_jar: DEFAULT_S3_DISTCP_JAR)
         assemble_from(Hash[HASH_FIELDS.map { |f| [f, nil] }])
         assemble_from(Hash[BOOLEAN_FIELDS.map { |f| [f, false] }])
 
@@ -61,7 +65,7 @@ module RP
             name: name,
             action_on_failure: action_on_failure,
             hadoop_jar_step: {
-              jar: '/home/hadoop/lib/emr-s3distcp-1.0.jar',
+              jar: s3_distcp_jar,
               args: hash_field_args + boolean_fields_args,
             }
           )

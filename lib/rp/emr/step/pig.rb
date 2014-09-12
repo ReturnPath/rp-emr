@@ -47,7 +47,7 @@ module RP
         end
 
         def step
-          DP::EMR::Step.new(
+          RP::EMR::Step.new(
             name: name,
             action_on_failure: action_on_failure,
             hadoop_jar_step: {

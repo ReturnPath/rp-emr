@@ -17,6 +17,7 @@ module RP
         new_supported_products: nil,
         visible_to_all_users: true,
         job_flow_role: nil,
+        service_role: nil,
         tags: nil,
       )
 
@@ -32,6 +33,7 @@ module RP
           new_supported_products: new_supported_products,
           visible_to_all_users: visible_to_all_users,
           job_flow_role: job_flow_role,
+          service_role: service_role,
           tags: tags,
         }.reject { |k,v| !v || (v.respond_to?(:empty?) && v.empty?) }
       end
