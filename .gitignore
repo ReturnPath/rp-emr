@@ -1,1 +1,4 @@
 .bundle
+.idea
+pkg/
+Gemfile.lock

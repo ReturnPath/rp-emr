@@ -64,9 +64,25 @@ module RP
             banner: 'IAM_ROLE',
             desc: "IAM Role for the job flow",
           )
+          method_option(:service_role,
+                        default: defaults[:service_role],
+                        banner: 'IAM_ROLE',
+                        desc: "IAM Role for the service",
+          )
         end
 
         def add_setup_pig_step_method_options(defaults = {})
+          method_option(:pig_version,
+            default: defaults[:pig_version] || '0.11.1.1',
+            desc: 'Version of Pig to install'
+          )
+        end
+
+        def add_setup_hive_step_method_options(defaults = {})
+          method_option(:hive_version,
+                        default: defaults[:hive_version] || 'latest',
+                        desc: 'Version of Hive to install'
+          )
         end
 
         def add_rollup_step_method_options(defaults = {})
@@ -138,7 +154,8 @@ module RP
           job.log_uri = "s3://oib-mapreduce/logs/mosaic_analysis/#{job_name.underscore}"
           job.instances = instances.to_hash
           job.steps = [setup_debugging_step.to_hash]
-          job.job_flow_role = options[:job_flow_role] if options.has_key?(:job_flow_role)
+          job.job_flow_role = options[:job_flow_role] if options[:job_flow_role]
+          job.service_role = options[:service_role] if options[:service_role]
         end
 
         if options[:dry_run]
@@ -160,11 +177,28 @@ module RP
 
         step = RP::EMR::Step::SetupPig.new do |s|
           s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
+          s.pig_version = options[:pig_version] if options[:pig_version]
         end
 
         job.add_steps([step.to_hash]) unless options[:dry_run]
         puts '-----------'
         puts "Added setup pig step to #{job.id} with #{args}, #{options}"
+        pp step.to_hash if options[:verbose]
+      end
+
+      desc "add_setup_hive_step JOB_ID", "Add a setup hive step to an existing job"
+      add_setup_hive_step_method_options
+      def add_setup_hive_step(job_id, *)
+        job = AWS::EMR.new.job_flows[job_id]
+
+        step = RP::EMR::Step::SetupHive.new do |s|
+          s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
+          s.hive_version = options[:hive_version] if options[:hive_version]
+        end
+
+        job.add_steps([step.to_hash]) unless options[:dry_run]
+        puts '-----------'
+        puts "Added setup hive step to #{job.id} with #{args}, #{options}"
         pp step.to_hash if options[:verbose]
       end
 
