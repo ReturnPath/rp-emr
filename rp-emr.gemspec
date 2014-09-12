@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["ryanmichael@otherinbox.com", 'andrew.harrison@returnpath.com']
   spec.summary       = %q{EMR Helpers}
   spec.description   = %q{Framework for launching EMR job flows}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ReturnPath/rp-emr"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
