@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "activesupport"
-  spec.add_dependency "aws-sdk"
+  spec.add_dependency "aws-sdk", "~> 2.0"
   spec.add_dependency "assembler"
   spec.add_dependency "thor"
 

@@ -161,7 +161,9 @@ module RP
         if options[:dry_run]
           job_flow = OpenStruct.new(id: 'job_flow_id')
         else
-          job_flow = AWS::EMR.new.job_flows.create(job_name, job.to_hash)
+          job_hash = job.to_hash
+          job_hash[:name] = job_name
+          job_flow = Aws::EMR::Client.new.run_job_flow(job_hash)
         end
         puts '-----------'
         puts "Created job flow #{job_flow.id} with #{args}, #{options}"
@@ -173,40 +175,42 @@ module RP
       desc "add_setup_pig_step JOB_ID", "Add a setup pig step to an existing job"
       add_setup_pig_step_method_options
       def add_setup_pig_step(job_id, *)
-        job = AWS::EMR.new.job_flows[job_id]
-
         step = RP::EMR::Step::SetupPig.new do |s|
           s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
           s.pig_version = options[:pig_version] if options[:pig_version]
         end
 
-        job.add_steps([step.to_hash]) unless options[:dry_run]
+        steps_hash = {
+          name: job_id,
+          steps: [step.to_hash],
+        }
+        Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
         puts '-----------'
-        puts "Added setup pig step to #{job.id} with #{args}, #{options}"
+        puts "Added setup pig step to #{job_id} with #{args}, #{options}"
         pp step.to_hash if options[:verbose]
       end
 
       desc "add_setup_hive_step JOB_ID", "Add a setup hive step to an existing job"
       add_setup_hive_step_method_options
       def add_setup_hive_step(job_id, *)
-        job = AWS::EMR.new.job_flows[job_id]
-
         step = RP::EMR::Step::SetupHive.new do |s|
           s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
           s.hive_version = options[:hive_version] if options[:hive_version]
         end
 
-        job.add_steps([step.to_hash]) unless options[:dry_run]
+        steps_hash = {
+          name: job_id,
+          steps: [step.to_hash],
+        }
+        Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
         puts '-----------'
-        puts "Added setup hive step to #{job.id} with #{args}, #{options}"
+        puts "Added setup hive step to #{job_id} with #{args}, #{options}"
         pp step.to_hash if options[:verbose]
       end
 
       desc "add_rollup_step JOB_ID INPUT OUTPUT", "Add a S3DistCp rollup step to an existing job"
       add_rollup_step_method_options
       def add_rollup_step(job_id, input, output, *)
-        job = AWS::EMR.new.job_flows[job_id]
-        
         step = RP::EMR::Step::S3DistCp.new(
           name: 'Rollup',
           src: input,
@@ -218,17 +222,19 @@ module RP
           s.action_on_failure = 'CANCEL_AND_WAIT' if options[:keep_alive]
         end
 
-        job.add_steps([step.to_hash]) unless options[:dry_run]
+        steps_hash = {
+          name: job_id,
+          steps: [step.to_hash],
+        }
+        Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
         puts '-----------'
-        puts "Added rollup step to #{job.id} with #{args}, #{options}"
+        puts "Added rollup step to #{job_id} with #{args}, #{options}"
         pp step.to_hash if options[:verbose]
       end
 
       desc "add_pig_script_step JOB_ID SCRIPT_PATH", "Add a Pig script step to an existing job"
       add_pig_script_step_method_options
       def add_pig_script_step(job_id, script_path, *)
-        job = AWS::EMR.new.job_flows[job_id]
-        
         step = RP::EMR::Step::Pig.new(
           name: 'Pig',
           script_path: script_path,
@@ -239,9 +245,13 @@ module RP
           s.dry_run = options[:dry_run]
         end
 
-        job.add_steps([step.to_hash]) unless options[:dry_run]
+        steps_hash = {
+          name: job_id,
+          steps: [step.to_hash],
+        }
+        Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
         puts '-----------'
-        puts "Added pig script step to #{job.id} with #{args}, #{options}"
+        puts "Added pig script step to #{job_id} with #{args}, #{options}"
         pp step.to_hash if options[:verbose]
       end
     end
