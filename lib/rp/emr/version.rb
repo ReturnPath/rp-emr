@@ -1,5 +1,5 @@
 module RP
   module EMR
-    VERSION = "1.0.4"
+    VERSION = "2.0.0.beta3"
   end
 end
