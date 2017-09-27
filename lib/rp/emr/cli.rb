@@ -166,10 +166,10 @@ module RP
           job_flow = Aws::EMR::Client.new.run_job_flow(job_hash)
         end
         puts '-----------'
-        puts "Created job flow #{job_flow.id} with #{args}, #{options}"
+        puts "Created job flow #{job_flow.job_flow_id} with #{args}, #{options}"
         pp job.to_hash if options[:verbose]
 
-        return job_flow.id
+        return job_flow.job_flow_id
       end
 
       desc "add_setup_pig_step JOB_ID", "Add a setup pig step to an existing job"
@@ -181,7 +181,7 @@ module RP
         end
 
         steps_hash = {
-          name: job_id,
+          job_flow_id: job_id,
           steps: [step.to_hash],
         }
         Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
@@ -199,7 +199,7 @@ module RP
         end
 
         steps_hash = {
-          name: job_id,
+          job_flow_id: job_id,
           steps: [step.to_hash],
         }
         Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
@@ -223,7 +223,7 @@ module RP
         end
 
         steps_hash = {
-          name: job_id,
+          job_flow_id: job_id,
           steps: [step.to_hash],
         }
         Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
@@ -246,7 +246,7 @@ module RP
         end
 
         steps_hash = {
-          name: job_id,
+          job_flow_id: job_id,
           steps: [step.to_hash],
         }
         Aws::EMR::Client.new.add_job_flow_steps(steps_hash) unless options[:dry_run]
