@@ -51,7 +51,7 @@ module RP
             name: name,
             action_on_failure: action_on_failure,
             hadoop_jar_step: {
-              jar: 's3://us-east-1.elasticmapreduce/libs/script-runner/script-runner.jar',
+              jar: 'custom-runner.jar',
               args: hadoop_jar_base_args + args + formatted_params,
             }
           )
@@ -59,10 +59,7 @@ module RP
 
         def hadoop_jar_base_args
           [
-            's3://us-east-1.elasticmapreduce/libs/pig/pig-script',
-            '--base-path', 's3://us-east-1.elasticmapreduce/libs/pig/',
-            '--pig-versions', pig_version,
-            '--run-pig-script',
+            'pig-script'
           ]
         end
 
