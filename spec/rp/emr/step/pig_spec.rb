@@ -5,8 +5,8 @@ describe RP::EMR::Step::Pig do
     let(:written) { [] }
 
     before(:each) do
-      allow_any_instance_of(AWS::S3::S3Object).to receive(:write) do |data|
-        written << data
+      allow_any_instance_of(Aws::S3::Object).to receive(:put) do |data, args|
+        written << args[:body]
       end
     end
 
@@ -39,13 +39,12 @@ describe RP::EMR::Step::Pig do
     end
 
     it "writes script to expected path" do
-      expect_any_instance_of(AWS::S3::ObjectCollection).to receive(:[]).with(expected_script_path).and_call_original
+      expect_any_instance_of(Aws::S3::Bucket).to receive(:object).with(expected_script_path).and_call_original
 
       step.to_hash
     end
 
     it "uploads pig script contents" do
-      pending "Strange behavior with test setup?"
       step.to_hash
 
       expect(written).to eq(['script_contents'])

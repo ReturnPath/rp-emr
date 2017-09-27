@@ -28,7 +28,7 @@ module RP
 
         def upload_script!
           # puts "Uploading to s3://#{script_bucket}/#{script_key}"
-          s3.buckets[script_bucket].objects[script_key].write(script)
+          s3.bucket(script_bucket).object(script_key).put(body: script)
         end
 
         def script
@@ -76,7 +76,7 @@ module RP
         end
 
         def s3
-          AWS::S3.new
+          Aws::S3::Resource.new
         end
       end
     end
