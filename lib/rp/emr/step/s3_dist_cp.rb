@@ -61,12 +61,17 @@ module RP
         private
 
         def step
+          args = hash_field_args + boolean_fields_args
+          if s3_distcp_jar == 'custom-runner.jar'
+            args.unshift! "s3-dist-cp"
+          end
+
           RP::EMR::Step.new(
             name: name,
             action_on_failure: action_on_failure,
             hadoop_jar_step: {
               jar: s3_distcp_jar,
-              args: hash_field_args + boolean_fields_args,
+              args: args,
             }
           )
         end
