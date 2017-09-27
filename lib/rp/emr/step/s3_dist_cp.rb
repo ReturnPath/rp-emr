@@ -63,7 +63,7 @@ module RP
         def step
           args = hash_field_args + boolean_fields_args
           if s3_distcp_jar == 'custom-runner.jar'
-            args.unshift! "s3-dist-cp"
+            args.unshift "s3-dist-cp"
           end
 
           RP::EMR::Step.new(
