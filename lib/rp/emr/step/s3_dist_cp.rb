@@ -62,7 +62,7 @@ module RP
 
         def step
           args = hash_field_args + boolean_fields_args
-          if s3_distcp_jar == 'custom-runner.jar'
+          if s3_distcp_jar == 'command-runner.jar'
             args.unshift "s3-dist-cp"
           end
 

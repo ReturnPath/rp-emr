@@ -51,7 +51,7 @@ module RP
             name: name,
             action_on_failure: action_on_failure,
             hadoop_jar_step: {
-              jar: 'custom-runner.jar',
+              jar: 'command-runner.jar',
               args: hadoop_jar_base_args + args + formatted_params,
             }
           )
