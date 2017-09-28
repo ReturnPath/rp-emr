@@ -59,7 +59,8 @@ module RP
 
         def hadoop_jar_base_args
           [
-            'pig-script'
+            'pig-script',
+            '--run-pig-script'
           ]
         end
 
